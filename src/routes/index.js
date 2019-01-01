@@ -9,7 +9,7 @@
  */
 
 module.exports = function(appObj) {
-    appObj.get('/api',function(req, res){
-        res.send("hello Izhar");
+    appObj.get('/',function(req, res){
+        res.status(200).json({name: "hello Izhar"});
     })
 };
