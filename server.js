@@ -1,6 +1,7 @@
 /*jslint node: true */
 "use strict";  
 
+var http = require('http');
 var config = require('./config/config');
 var path = require('path');
 var fs = require('fs');
@@ -12,7 +13,7 @@ var cookieParser = require('cookie-parser');
 var timeout = require('connect-timeout');
 var _portSocket = config.APP_PORT;
 
-var server = app.listen(0, 'localhost')
+// var server = app.listen(0, 'localhost')
 
 
 
@@ -57,7 +58,13 @@ function haltOnTimedout(req, res, next) {
 require('./lib/mongoconnection');
 require('./src/routes/index')(app);
 
-server.listen(_portSocket, function() {
-    console.log('Express server listening on %d, in %s mode', _portSocket,
-        app.get('env'));
-});
+// server.listen(_portSocket, function() {
+//     console.log('Express server listening on %d, in %s mode', _portSocket,
+//         app.get('env'));
+// });
+
+var server = http.createServer(app);
+server.listen((process.env.PORT || 8080), function () {
+	var port = server.address().port;
+	console.log("App now running on port", port);
+})
