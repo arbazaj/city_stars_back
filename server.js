@@ -12,12 +12,6 @@ var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var timeout = require('connect-timeout');
 var _portSocket = config.APP_PORT;
-
-// var server = app.listen(0, 'localhost')
-
-
-
-
 app.use(cors());
 app.use(timeout('200s'))
 
@@ -57,11 +51,6 @@ function haltOnTimedout(req, res, next) {
 
 require('./lib/mongoconnection');
 require('./src/routes/index')(app);
-
-// server.listen(_portSocket, function() {
-//     console.log('Express server listening on %d, in %s mode', _portSocket,
-//         app.get('env'));
-// });
 
 var server = http.createServer(app);
 server.listen((process.env.PORT || 8080), function () {
