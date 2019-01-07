@@ -10,4 +10,7 @@ var loginRouter = require('./login');
 
 module.exports = function index(app) {
     app.use('/api/login', loginRouter);
+    app.use('/api/test', function(req, res){
+        res.send("test works");
+    })
 };
