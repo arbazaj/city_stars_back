@@ -16,7 +16,6 @@ var server = app.listen(0, 'localhost')
 
 
 
-
 app.use(cors());
 app.use(timeout('200s'))
 
@@ -53,10 +52,11 @@ function haltOnTimedout(req, res, next) {
         next();
 }
 
+require('./src/helpers/passport.facebook')(app);
+require('./src/helpers/passport.goole')(app);
 
 require('./lib/mongoconnection');
 require('./src/routes/index')(app);
-
 server.listen(_portSocket, function() {
     console.log('Express server listening on %d, in %s mode', _portSocket,
         app.get('env'));
