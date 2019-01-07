@@ -13,6 +13,11 @@ var cookieParser = require('cookie-parser');
 var timeout = require('connect-timeout');
 var _portSocket = config.APP_PORT;
 app.use(cors());
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 app.use(timeout('200s'))
 
 
@@ -48,6 +53,8 @@ function haltOnTimedout(req, res, next) {
         next();
 }
 
+require('./src/helpers/passport.facebook')(app);
+require('./src/helpers/passport.goole')(app);
 
 require('./lib/mongoconnection');
 require('./src/routes/index')(app);
