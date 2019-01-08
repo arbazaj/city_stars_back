@@ -8,7 +8,7 @@ const generateTokenService = require('../services/generateTokenService');
  * */
 
 authControllers.generateJwtToken = async (req, res) => {
-    const  token = await generateTokenService.generateToken(req.user); 
+    const  token = await generateTokenService.generateToken(req.user);
     return token;
 };
 

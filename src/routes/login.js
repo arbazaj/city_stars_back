@@ -14,7 +14,7 @@ router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }))
 router.get('/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/api/login/failure' }), async function (req, res) {
         let respData = await authControllers.generateJwtToken(req, res);
-        res.status(200).json(respData);
+        res.redirect("http://localhost:4200/login?token="+respData.token);
 
     });
 
@@ -35,7 +35,8 @@ router.get('/google',
 router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/api/login/failure' }), async function (req, res){
         const respData = await authControllers.generateJwtToken(req, res);
-        res.status(200).json(respData)
+        // res.status(200).json(respData)
+        res.redirect("http://localhost:4200/login?token="+respData.token);
     })
 
 router.get('/failure', function (req, res) {
