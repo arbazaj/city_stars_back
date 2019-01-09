@@ -14,4 +14,8 @@ exports.TOKEN_ERROR_MESSAGE = {
     PROVIDE_TOKEN : 'Please provide token',
     UNAUTHORIZED: 'Unauthorized token'
 }
+exports.ERROR_MESSAGES = {
+    INTERNAL_SERVER_ERROR : 'Internal server error',
+    USER_NOT_FOUND: 'User not found'
+}
 

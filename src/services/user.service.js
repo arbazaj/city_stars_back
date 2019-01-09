@@ -29,7 +29,7 @@ async function createUser(profile, accessToken) {
 
 async function getUserByMailAndProvider(decoded){
     let {provider = null, email = null} = decoded;
-    let userData = userDao.getUserData({provider: provider, email: email});
+    let userData = await userDao.getUserData({provider: provider, email: email});
     return userData;
 }
 

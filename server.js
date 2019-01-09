@@ -38,11 +38,10 @@ app.use(function(err, req, res, next) {
 
 // handle app level errors
 var errorFilter = function(err, req, res, next) {
-    console.log("errorFilter here", JSON.stringify(err));
     if (!res.headersSent) { //just because of your current problem, no need to exacerbate it.
         var errcode = err.status || 500; //err has status not statusCode
-        var msg = err.message || 'server error!';
-        res.status(errcode).send(msg); //the future of send(status,msg) is hotly debated
+       // var msg = err.message || 'server error!';
+        res.status(errcode).send(err); //the future of send(status,msg) is hotly debated
     };
 }
 

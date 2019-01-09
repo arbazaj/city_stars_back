@@ -1,4 +1,5 @@
 'use strict';
+const DB_CONSTANT = require('../../config/dbConstants');
 
 module.exports = function CustomError(message,status) {
   Error.captureStackTrace(this, this.constructor);

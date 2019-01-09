@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
 var passport = require('passport');
-
-var async = require('async');
+const config = require('../../config/config');
 var authControllers = require('../controllers/authController');
-var userController = require('../controllers/userController');
-var middlewares = require('../helpers/middleware');
+
+
 router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 
 // Facebook will redirect the user to this URL after approval.  Finish the
@@ -13,10 +12,13 @@ router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }))
 // access was granted, the user will be logged in.  Otherwise,
 // authentication has failed.
 router.get('/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/api/login/failure' }), async function (req, res) {
-        let respData = await authControllers.generateJwtToken(req, res);
-        res.redirect("http://localhost:4200/login?token=" + respData.token);
-
+    passport.authenticate('facebook', { failureRedirect: '/api/login/failure' }), async function (req, res, next) {
+        try{
+            const respData = await authControllers.generateJwtToken(req, res);
+            res.redirect(config.APP_BASE_URL + "login?token=" + respData.token);
+        }catch(error){
+            next(error);
+        }
     });
 
 // GET /auth/google
@@ -36,19 +38,19 @@ router.get('/google',
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 router.get('/google/callback',
-    passport.authenticate('google', { failureRedirect: '/api/login/failure' }), async function (req, res) {
-        const respData = await authControllers.generateJwtToken(req, res);
-        console.log(respData.token)
-        res.redirect("http://localhost:4200/login?token=" + respData.token);
+    passport.authenticate('google', { failureRedirect: '/api/login/failure' }), async function (req, res, next) {
+        try{
+            const respData = await authControllers.generateJwtToken(req, res);
+            res.redirect(config.APP_BASE_URL +"login?token=" + respData.token);
+        }catch(error){
+            next(error);
+        }
+        
     })
 
 router.get('/failure', function (req, res) {
-    res.send('login fail')
+    res.redirect(config.APP_BASE_URL+"login");
 })
 
-router.get('/getUser', 
-middlewares.authenticate, async  function(req, res, next) {
-  const userData =  await userController.findUser(req, res);
-  res.status(200).json({data: userData});
-})
+
 module.exports = router;

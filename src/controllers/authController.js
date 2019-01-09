@@ -1,6 +1,9 @@
 // const utils = require("../utils/common");
 const authControllers = {};
 const generateTokenService = require('../services/generateTokenService');
+const CustomError = require('../errors/custom-errors');
+const DB_CONSTANTS = require('../../config/dbConstants');
+
 /**
  * @description
  * Function authControllers is a Entry point for all user
@@ -12,7 +15,7 @@ authControllers.generateJwtToken = async (req, res) => {
         const  token = await generateTokenService.generateToken(req.user);
         return token;
     }catch(error){
-        
+        throw new CustomError(DB_CONSTANTS.ERROR_MESSAGES.INTERNAL_SERVER_ERROR, 500);
     }
     
 };

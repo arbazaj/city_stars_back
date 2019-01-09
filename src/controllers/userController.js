@@ -2,7 +2,8 @@
 const userService = require("../services/user.service");
 const userController = {};
 const _ = require("underscore");
-
+const CustomError = require('../errors/custom-errors');
+const DB_CONSTANTS = require('../../config/dbConstants');
 /**
  * @description
  * Function register is to create user
@@ -14,15 +15,19 @@ userController.createUser = async (profile, accessToken, done) => {
         await userService.createUser(profile, accessToken);
         return done(null, profile);
     }catch(error){
+        return done(error, null)
     }
     
 };
 
 userController.findUser = async (req, res)=>{
     try{
-        const userData = userService.getUserByMailAndProvider(req.userData);
-        return userData;
+        const userData = await userService.getUserByMailAndProvider(req.userData);
+        if(userData && Object.keys(userData).length){
+            return userData;
+        }else throw new CustomError(DB_CONSTANTS.ERROR_MESSAGES.USER_NOT_FOUND ,404)
     }catch(error){
+        throw new CustomError(DB_CONSTANTS.ERROR_MESSAGES.INTERNAL_SERVER_ERROR, 500);
     }
     
 }
