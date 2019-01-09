@@ -38,7 +38,7 @@ app.use(function(err, req, res, next) {
 
 // handle app level errors
 var errorFilter = function(err, req, res, next) {
-    console.log("errorFilter here");
+    console.log("errorFilter here", JSON.stringify(err));
     if (!res.headersSent) { //just because of your current problem, no need to exacerbate it.
         var errcode = err.status || 500; //err has status not statusCode
         var msg = err.message || 'server error!';
@@ -46,7 +46,6 @@ var errorFilter = function(err, req, res, next) {
     };
 }
 
-app.use(errorFilter);
 
 function haltOnTimedout(req, res, next) {
     if (!req.timedout)
@@ -58,6 +57,7 @@ require('./src/helpers/passport.goole')(app);
 
 require('./lib/mongoconnection');
 require('./src/routes/index')(app);
+app.use(errorFilter);
 
 var server = http.createServer(app);
 server.listen((process.env.PORT || 8080), function () {

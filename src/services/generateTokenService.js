@@ -1,4 +1,5 @@
 var jwt = require('jsonwebtoken');
+var DB_CONSTANTS = require('../../config/dbConstants');
 
 /**
  * @description
@@ -6,10 +7,14 @@ var jwt = require('jsonwebtoken');
  * @param user {Object}
  * */
 async function generateToken(user) {
-    console.log('user', user)
+    let provider = DB_CONSTANTS.SITE_PROVIDER;
+    if(DB_CONSTANTS.PROVIDERS_ARRAY.indexOf(user.provider) >= 0){
+        provider = DB_CONSTANTS.SOCIAL_PROVIDER;
+    }
     const token = await jwt.sign({
-        data: user.emails[0].value
-    }, 'secret', { expiresIn: '7d' });
+        email: user.emails[0].value,
+        provider: provider
+    }, DB_CONSTANTS.TOKEN_SECRET, { expiresIn: '7d' });
     return { token: token }
 }
 

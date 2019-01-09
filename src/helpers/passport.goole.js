@@ -1,6 +1,7 @@
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var config = require('../../config/config');
+var userController = require('../controllers/userController')
 module.exports = function (app) {
 
 
@@ -13,8 +14,8 @@ module.exports = function (app) {
         clientSecret: config.GOOGLE_CLIENT_SECRET,
         callbackURL: "/api/login/google/callback"
     },
-        function (accessToken, refreshToken, profile, done) {
-            return done(null, profile);
+       async function (accessToken, refreshToken, profile, done) {
+            return await userController.createUser(profile, accessToken, done);
         }
     ));
 }

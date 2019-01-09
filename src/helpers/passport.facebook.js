@@ -15,8 +15,8 @@ module.exports = function (app) {
         callbackURL: "/api/login/facebook/callback",
         profileFields: ['id', 'displayName', 'photos', 'email']
     },
-        function (accessToken, refreshToken, profile, done) {
-            done(null, profile)
+        async function (accessToken, refreshToken, profile, done) {
+            return await userController.createUser(profile, accessToken, done);
         }
     ));
     app.use(passport.initialize());
