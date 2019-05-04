@@ -42,8 +42,7 @@ userController.findUser = async (req, res)=>{
 
 userController.authUser = async (credentials)=>{
     try{
-        let userData = await userService.authUser(credentials);
-        
+        return await userService.authUser(credentials);
     } catch(error) {
         throw error;
     }

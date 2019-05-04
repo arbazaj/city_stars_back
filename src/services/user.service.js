@@ -2,7 +2,9 @@ const userDao = require("../dao/user.dao");
 const _ = require("underscore");
 const DB_CONSTANTS = require('../../config/dbConstants');
 const CustomError = require('../errors/custom-errors');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const tokenService = require('./generateTokenService');
+
 /**
  * @description
  * Function to create user.
@@ -29,7 +31,7 @@ async function createUser(profile, accessToken) {
 
 async function createCityStarsUser(userData) {
     if(userData && userData.email) {
-        let existingUser = await userDao.getUserData({email: userData.email});
+        let existingUser = await userDao.getUserData({email: userData.email, provider: DB_CONSTANTS.SITE_PROVIDER});
         if(existingUser) {
             throw new CustomError(DB_CONSTANTS.ERROR_MESSAGES.USER_ALREADY_EXIST.customTemplate(existingUser.email), 400) 
         }
@@ -57,12 +59,31 @@ async function getUserByMailAndProvider(decoded){
     return userData;
 }
 
-async function authUser(credetials) {
-
+async function authUser(credentials) {
+    if(credentials.email && credentials.password) {
+        let existingUser = await userDao.getUserData({email: credentials.email, provider: DB_CONSTANTS.SITE_PROVIDER});
+        if(existingUser) {
+            let isValidLogin = bcrypt.compareSync(credentials.password.toString(), existingUser.password);
+            if(isValidLogin) {
+                let token = await tokenService.generateToken(existingUser);
+                return {
+                    ...existingUser,
+                    accessToken: token.token
+                }
+            } else {
+                throw new CustomError(DB_CONSTANTS.ERROR_MESSAGES.IN_VALID_LOGIN, 401)
+            }
+        } else {
+            throw new CustomError(DB_CONSTANTS.ERROR_MESSAGES.IN_VALID_LOGIN, 401);
+        }
+    } else {
+        throw new CustomError(DB_CONSTANTS.ERROR_MESSAGES.IN_VALID_LOGIN, 401);
+    }
 }
 
 module.exports = {
     createUser,
     getUserByMailAndProvider,
-    createCityStarsUser
+    createCityStarsUser,
+    authUser
 };

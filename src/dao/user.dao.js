@@ -12,7 +12,7 @@ async function createUser(data) {
 
 async function getUserData(query){
     const projection = {};
-    const userData = await userDao.findOne(query, projection);
+    const userData = await userDao.findOne(query, projection).lean().exec();
     return userData;
 }
 
