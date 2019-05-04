@@ -20,17 +20,34 @@ userController.createUser = async (profile, accessToken, done) => {
     
 };
 
+userController.createCityStarsUser = async (userData) => {
+    try{
+        return await userService.createCityStarsUser(userData);
+    } catch(error) {
+        throw error;
+    }
+};
+
 userController.findUser = async (req, res)=>{
     try{
         const userData = await userService.getUserByMailAndProvider(req.userData);
         if(userData && Object.keys(userData).length){
             return userData;
-        }else throw new CustomError(DB_CONSTANTS.ERROR_MESSAGES.USER_NOT_FOUND ,404)
+        }else throw new CustomError(DB_CONSTANTS.ERROR_MESSAGES.USER_NOT_FOUND, 404)
     }catch(error){
         throw new CustomError(DB_CONSTANTS.ERROR_MESSAGES.INTERNAL_SERVER_ERROR, 500);
     }
     
 }
 
+userController.authUser = async (credentials)=>{
+    try{
+        let userData = await userService.authUser(credentials);
+        
+    } catch(error) {
+        throw error;
+    }
+    
+}
 
 module.exports = userController;

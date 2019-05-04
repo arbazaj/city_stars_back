@@ -13,4 +13,23 @@ middlewares.authenticate, async  (req, res, next)=> {
   }
   
 })
+
+router.post('/createUser', async  (req, res, next)=> {
+  	try{
+		const userData =  await userController.createCityStarsUser(req.body);
+    	res.status(200).json({data: userData});
+  	} catch(error) {	
+		next(error);
+  	}
+})
+
+router.post('/authUser', async  (req, res, next)=> {
+	try{
+		const userData =  await userController.authUser(req.body);
+		res.status(200).json({data: userData});
+	} catch(error) {
+		next(error);
+	}
+})
+
 module.exports = router;

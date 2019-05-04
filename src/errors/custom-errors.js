@@ -6,6 +6,7 @@ module.exports = function CustomError(message,status) {
   this.name = this.constructor.name;
   this.message = message;
   this.status = status;
+  this.errorType = "Custom"
 };
 
 require('util').inherits(module.exports, Error);

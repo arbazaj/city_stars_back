@@ -1,7 +1,15 @@
 /**
  * Created by izhar on 01/01/2019.
  */
-
+String.prototype.customTemplate = function (...params) {
+    if(params && params.length > 0) {
+        var k = this;
+        for(var i =0; i < params.length; i++) {
+              k = k.replace('['+i+']', params[i])
+        }	
+        return k;
+    }
+}
 
 exports.action = new Array();
 exports.action.insert = "INSERT";
@@ -16,6 +24,8 @@ exports.TOKEN_ERROR_MESSAGE = {
 }
 exports.ERROR_MESSAGES = {
     INTERNAL_SERVER_ERROR : 'Internal server error',
-    USER_NOT_FOUND: 'User not found'
+    USER_NOT_FOUND: 'User not found',
+    EMAIL_REQUIRED: 'Email is required',
+    USER_ALREADY_EXIST: 'User with email [0] already exist. Please choose another one.'
 }
-
+exports.BCRYPT_SALT = 10;
