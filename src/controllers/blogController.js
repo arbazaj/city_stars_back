@@ -28,12 +28,20 @@ blogController.createBlog = async (req) => {
 
 blogController.getApprovedBlogs = async () => {
     try {
-        const blog = await blogService.getApprovedBlogs();
-        return blog;
+        const blogs = await blogService.getApprovedBlogs();
+        return blogs;
     } catch(error) {
         throw error;
     }
 }
 
+blogController.getApprovedBlog = async (req) => {
+    try {
+        const blog = await blogService.getApprovedBlog(req);
+        return blog;
+    } catch(error) {
+        throw error;
+    }
+}
 
 module.exports = blogController;

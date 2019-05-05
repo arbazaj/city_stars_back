@@ -10,15 +10,18 @@ async function createBlog(data) {
     return userData;
 }
 
-async function getApprovedBlogs() {
-    let query = {
-        status: dbConstants.BLOG_STATUSES['PENDING_APPROVAL']
-    }
+async function getApprovedBlogs(query) {
     const blogs = await blogDao.findMany(query).populate({'path': 'user_id'}).lean().exec();
+    return blogs;
+}
+
+async function getApprovedBlog(query) {
+    const blogs = await blogDao.findOne(query).populate({'path': 'user_id'}).lean().exec();
     return blogs;
 }
 
 module.exports = {
     createBlog,
-    getApprovedBlogs
+    getApprovedBlogs,
+    getApprovedBlog
 };

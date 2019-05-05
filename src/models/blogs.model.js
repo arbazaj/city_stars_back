@@ -7,6 +7,10 @@ const blogSchema = mongoose.Schema({
 		type: String,
 		required: true
     },
+    heading: {
+		type: String,
+		required: true
+    },
     user_id: { 
         type: Schema.Types.ObjectId,
         ref: 'user',

@@ -39,4 +39,16 @@ router.get('/approvedBlogs', async  (req, res, next)=> {
     }
 })
 
+router.get('/approvedBlogs/:id', async  (req, res, next)=> {
+    try{
+        const blog =  await blogController.getApprovedBlog(req);
+        res.status(200).json({data: {
+            blog: blog,
+        }});
+    } catch(error) {
+        console.log(error);
+        next(error);
+    }
+})
+
 module.exports = router;
