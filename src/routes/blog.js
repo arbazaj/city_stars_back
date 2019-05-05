@@ -27,4 +27,16 @@ router.post('/saveBlog',validateUser.authenticate, async  (req, res, next)=> {
     }
 })
 
+router.get('/approvedBlogs', async  (req, res, next)=> {
+    try{
+        const blogs =  await blogController.getApprovedBlogs();
+        res.status(200).json({data: {
+            blogs: blogs,
+            count: blogs.length
+        }});
+    } catch(error) {
+        next(error);
+    }
+})
+
 module.exports = router;

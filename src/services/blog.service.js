@@ -16,7 +16,13 @@ async function createBlog(req) {
     return savedBlog;
 }
 
+async function getApprovedBlogs() {
+    let savedBlog = await blogDao.getApprovedBlogs();
+    return savedBlog;
+}
+
 module.exports = {
     uploadImage,
-    createBlog
+    createBlog,
+    getApprovedBlogs
 };
