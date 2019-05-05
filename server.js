@@ -3,8 +3,7 @@
 
 var http = require('http');
 var config = require('./config/config');
-var path = require('path');
-var fs = require('fs');
+var cloudinary = require('cloudinary').v2;
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -50,6 +49,12 @@ function haltOnTimedout(req, res, next) {
     if (!req.timedout)
         next();
 }
+
+cloudinary.config({ 
+    cloud_name: 'blogs', 
+    api_key: '485458417212477', 
+    api_secret: 'WzbjJXK1NYx8_XiQPfHdGjMNlbo' 
+});
 
 require('./src/helpers/passport.facebook')(app);
 require('./src/helpers/passport.goole')(app);
