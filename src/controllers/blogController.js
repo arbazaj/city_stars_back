@@ -17,6 +17,14 @@ blogController.uploadImage = async (req) => {
     }
 };
 
+blogController.createBlog = async (req) => {
+    try {
+        const blog = await blogService.createBlog(req);
+        return blog;
+    } catch(error) {
+        throw error;
+    }
+}
 
 
 module.exports = blogController;

@@ -43,7 +43,7 @@ class BaseDao {
      * @returns {Promise}
      */
 	insertOne(doc) {
-		return this.model.insertOne(doc);
+		return this.model.save(doc);
 	}
   
 	/**

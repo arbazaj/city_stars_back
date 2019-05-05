@@ -7,10 +7,16 @@ async function authenticate(req, res, next) {
         let token = req.headers.authorization;
         if (token) {
             token = token.split(" ")[1];
-            const decoded = jwt.verify(token, DB_CONSTANTS.TOKEN_SECRET);
-            let userData = await userService.getUserByMailAndProvider(decoded);
-            req.userData = userData;
-            next();
+            if(token) {
+                const decoded = jwt.verify(token, DB_CONSTANTS.TOKEN_SECRET);
+                let userData = await userService.getUserByMailAndProvider(decoded);
+                req.userData = userData;
+                next();
+            } else {
+                return res.status(401).json({
+                    message: DB_CONSTANTS.TOKEN_ERROR_MESSAGE.PROVIDE_TOKEN
+                });
+            }
         } else {
             return res.status(401).json({
                 message: DB_CONSTANTS.TOKEN_ERROR_MESSAGE.PROVIDE_TOKEN
